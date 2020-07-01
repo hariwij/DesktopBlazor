@@ -1,0 +1,44 @@
+﻿@using DesktopBlazor.Shared
+@inject NavigationManager NavMan;
+@page "/counter"
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+@*<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>*@
+<button class="btn btn-primary" @onclick="OpenForm">Open Form</button>
+<button class="btn btn-primary" @onclick="OpenMessageBox">Open MessageBox</button>
+<button class="btn btn-primary" @onclick="ShowMessage">Send Message</button>
+<hr />
+<input class="form-control" @bind="url" />
+<button class="btn btn-primary" @onclick="OpenURL">Open URL</button>
+
+@code {
+    string url;
+    private int currentCount = 0;
+
+    ConnectionBrokerHandler handler;
+    protected override async Task OnInitializedAsync()
+    {
+        handler = new ConnectionBrokerHandler(NavMan.BaseUri);
+        await handler.Start();
+        await base.OnInitializedAsync();
+    }
+    async void OpenForm()
+    {
+        await handler.OpenForm(new Form { Text = "This Is Form Open By Blazor" }, false, true);
+    }
+    async void OpenMessageBox()
+    {
+        await handler.OpenMessageBox("Hi This Is Message Box.. Togle From Blazor...", "Alert!!!", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+    }
+    async void ShowMessage()
+    {
+        await handler.SendMessage("Hi I'm Blazor");
+    }
+    async void OpenURL()
+    {
+        await handler.OpenURL(url, new Form { Text = "This Is Form Open By Blazor" });
+    }
+}
