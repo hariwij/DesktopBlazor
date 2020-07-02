@@ -18,7 +18,6 @@ namespace DesktopBlazor.Windows
         {
             Thread thread = new Thread(new ThreadStart(StartServer));
             thread.Start();
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var form = new Form1();
